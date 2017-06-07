@@ -40,10 +40,12 @@ This will allow shield to send DMX TX signal via Serial1.
 To test it, open Arduino Console and type several symbols.
 
 Also, you can test overall DMX setup, by uncommenting code masred at //TEST in this sketch:
+```
   //TEST
   set_dmx_ch(1,test++);
   test %= 256;
   delay(3);
+```
 
 This code sends periodical increasing values to the first channel.
 
