@@ -1,3 +1,4 @@
+/*
 # DMX_Arduino_Serial_PC
 
 Here is a sketch which allows to control 1-st DMX channel from PC using Arduino DMX shield.
@@ -52,3 +53,46 @@ This code sends periodical increasing values to the first channel.
 Have fun!
 
 Kuflex team.
+*/
+
+#include <Conceptinetics.h>
+
+#define DMX_MASTER_CHANNELS   100 
+#define RXEN_PIN                2
+DMX_Master        dmx_master ( DMX_MASTER_CHANNELS, RXEN_PIN );
+int led_on = 0;
+
+void set_dmx_ch(int i, int v) {
+  dmx_master.setChannelValue ( 1, v++ );
+  led_on = 1-led_on;
+  if (led_on) digitalWrite(LED_BUILTIN,HIGH);
+  else digitalWrite(LED_BUILTIN,LOW);
+}
+
+
+void setup() {
+  dmx_master.enable (); 
+
+  pinMode(LED_BUILTIN, OUTPUT);  
+  Serial.begin(9600);
+  Serial.println("1-channel DMX control");
+
+  //dmx_master.setChannelRange ( 1, 25, 0 );
+  set_dmx_ch(1,0);
+} 
+
+int test=0;
+
+void loop() {
+int v = Serial.read(); 
+  if (v>=0) { 
+    set_dmx_ch(1,v);        
+  }
+  delay(1);
+
+  //TEST
+  //set_dmx_ch(1,test++);
+  //test %= 256;
+  //delay(3);
+             
+}
